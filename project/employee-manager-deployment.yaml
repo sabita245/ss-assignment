@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-manager-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-manager-service
+  template:
+    metadata:
+      labels:
+        app: employee-manager-service
+    spec:
+      containers:
+      - name: employee-manager-service
+        image: employee-manager-service1:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8001
+        env:
+          - name: DB_HOST
+            value: "employee-manager-db"  # Database service name
+          - name: DB_NAME
+            value: "employee_manager_db"
+          - name: DB_USER
+            value: "admin"
+          - name: DB_PASSWORD
+            value: "password"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-manager-service
+spec:
+  selector:
+    app: employee-manager-service
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8001
+  type: NodePort
+

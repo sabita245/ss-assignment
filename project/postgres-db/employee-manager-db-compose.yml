@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  employee-manager-db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: employee_manager_db
+    ports:
+      - "5433:5432"  # Map to a different port if running alongside the other database
+

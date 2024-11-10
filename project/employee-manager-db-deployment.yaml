@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: employee-manager-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: employee-manager-db
+  template:
+    metadata:
+      labels:
+        app: employee-manager-db
+    spec:
+      containers:
+      - name: employee-manager-db
+        image: postgres:13
+        env:
+          - name: POSTGRES_USER
+            value: "admin"
+          - name: POSTGRES_PASSWORD
+            value: "password"
+          - name: POSTGRES_DB
+            value: "employee_manager_db"
+        ports:
+        - containerPort: 5432
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: employee-manager-db
+spec:
+  selector:
+    app: employee-manager-db
+  ports:
+    - protocol: TCP
+      port: 5432
+  type: ClusterIP
+
